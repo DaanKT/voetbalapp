@@ -3,146 +3,182 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>UFT Live App — Interactieve Demo</title>
-<meta name="description" content="Ultimate Football Tournament — Interactieve app demo voor live scores, poulestanden en scheidsrechter invoer">
+<meta name="description" content="Ultimate Football Tournament — Live scores, poulestanden en scheidsrechter invoer">
 <meta name="theme-color" content="#090e1a">
-<meta property="og:title" content="UFT Live App Demo">
-<meta property="og:description" content="Live scores, poulestanden en scheidsrechter invoer voor UFT toernooien">
+<title>UFT Tournament App</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Barlow+Condensed:wght@600;700;800;900&display=swap" rel="stylesheet">
-<style>
-/* Fallback fonts if Google Fonts unavailable */
-body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif; }
-.bc, .hub-t, .cdn, .mc-sn, .ref-ts, .ref-tn, .sc-goals, .op-stat-n, .lb-val {
-  font-family: 'Barlow Condensed', 'Arial Narrow', 'Impact', condensed, sans-serif;
-}
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@600;700;800;900&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --bg:#090e1a;--surf:#0f1728;--card:#141e30;--card2:#1a2540;
-  --border:#1e2e48;--border2:#263652;
-  --blue:#2d5be3;--blue2:#4a78ff;--white:#fff;
-  --g1:#c0cce0;--g2:#6b7fa0;--g3:#384d6e;
+  --border:#1e2e48;--border2:#263652;--navy:#1a2a4a;
+  --blue:#2d5be3;--blue2:#4a78ff;
+  --white:#fff;--g1:#c0cce0;--g2:#6b7fa0;--g3:#384d6e;
   --green:#00e676;--red:#ff4757;--gold:#f5a623;--yellow:#ffd600;
 }
-
-html{height:100%}body{background:var(--bg);font-family:'Inter',sans-serif;color:var(--white);display:flex;flex-direction:column;position:fixed;width:100%;top:0;left:0;bottom:0;right:0;overflow:hidden;-webkit-overflow-scrolling:touch;touch-action:manipulation}
+html{height:100%}
+body{
+  background:var(--bg);font-family:'Inter',sans-serif;color:var(--white);
+  display:flex;flex-direction:column;
+  position:fixed;width:100%;top:0;left:0;bottom:0;right:0;
+  overflow:hidden;touch-action:manipulation;
+}
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.7)}}
-@keyframes slideDown{from{transform:translateY(-60px);opacity:0}to{transform:translateY(0);opacity:1}}
 @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-@keyframes goalPop{0%{transform:scale(1)}30%{transform:scale(1.18)}100%{transform:scale(1)}}
+@keyframes slideDown{from{transform:translateY(-56px);opacity:0}to{transform:translateY(0);opacity:1}}
 .pdot{display:inline-block;width:6px;height:6px;border-radius:50%;background:currentColor;animation:pulse 1.4s ease-in-out infinite}
 
-/* TOPBAR */
-.topbar{background:#070c18;border-bottom:1px solid var(--border);padding:0 16px;height:52px;display:flex;align-items:center;gap:10px;flex-shrink:0}
-.tb-logo{height:22px;filter:brightness(0) invert(1);flex-shrink:0}
+/* ── TOPBAR ── */
+.topbar{
+  background:rgba(9,14,26,.96);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  padding:0 14px;height:54px;
+  display:flex;align-items:center;gap:10px;flex-shrink:0;
+  position:relative;z-index:50;
+}
+.tb-logo{height:24px;filter:brightness(0) invert(1);flex-shrink:0}
 .tb-div{width:1px;height:16px;background:var(--border2);flex-shrink:0}
-.tb-name{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;white-space:nowrap}
-.tb-modes{display:flex;gap:3px;flex-shrink:0}
-.tb-mode{padding:5px 10px;border-radius:6px;font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;border:1px solid var(--border2);background:transparent;color:var(--g2);transition:all .15s;white-space:nowrap;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.tb-name{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--white);white-space:nowrap}
+.tb-modes{display:flex;gap:4px;flex:1;justify-content:center}
+.tb-mode{
+  padding:6px 12px;border-radius:8px;font-size:11px;font-weight:700;
+  letter-spacing:.05em;text-transform:uppercase;cursor:pointer;
+  border:1px solid var(--border2);background:transparent;color:var(--g2);
+  transition:all .15s;white-space:nowrap;
+  touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+  font-family:'Inter',sans-serif;
+}
 .tb-mode.pub-on{background:var(--blue);border-color:var(--blue);color:#fff}
 .tb-mode.ref-on{background:var(--red);border-color:var(--red);color:#fff}
 .tb-mode.org-on{background:var(--gold);border-color:var(--gold);color:#070c18}
-.tb-spacer{flex:1}
-.pill-live{display:flex;align-items:center;gap:4px;background:rgba(255,71,87,.12);border:1px solid rgba(255,71,87,.28);border-radius:20px;padding:3px 10px;font-size:9px;font-weight:800;color:#ff4757;letter-spacing:.1em;white-space:nowrap}
-.pill-users{display:flex;align-items:center;gap:5px;background:rgba(45,91,227,.12);border:1px solid rgba(45,91,227,.25);border-radius:20px;padding:3px 10px;font-size:10px;font-weight:700;color:var(--blue2);white-space:nowrap}
+.tb-right{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.pill-live{display:flex;align-items:center;gap:4px;background:rgba(255,71,87,.12);border:1px solid rgba(255,71,87,.28);border-radius:20px;padding:3px 9px;font-size:9px;font-weight:800;color:#ff4757;letter-spacing:.1em;white-space:nowrap}
+.pill-users{display:flex;align-items:center;gap:4px;background:rgba(45,91,227,.12);border:1px solid rgba(45,91,227,.25);border-radius:20px;padding:3px 9px;font-size:9px;font-weight:700;color:var(--blue2);white-space:nowrap}
 
-/* MAIN */
-.main{display:flex;flex:1;overflow:hidden}
+/* ── MAIN LAYOUT ── */
+.main{display:flex;flex:1;overflow:hidden;min-height:0}
 
-/* LEFT PANEL */
-.lpanel{width:280px;flex-shrink:0;background:var(--surf);border-right:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;transition:width .2s}
-.lpanel.panel-hidden{width:0;overflow:hidden;min-width:0}
-.lp-hdr{padding:12px 14px 10px;border-bottom:1px solid var(--border);flex-shrink:0}
-.lp-title{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;margin-bottom:2px}
+/* ── LEFT PANEL ── */
+.lpanel{
+  width:270px;flex-shrink:0;background:var(--surf);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;overflow:hidden;
+  transition:width .2s;
+}
+.lpanel.panel-hidden{width:0;min-width:0;overflow:hidden}
+.lp-hdr{padding:14px 16px 10px;border-bottom:1px solid var(--border);flex-shrink:0}
+.lp-title{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:#fff;margin-bottom:2px;letter-spacing:.02em}
 .lp-sub{font-size:10px;color:var(--g2)}
-.lp-body{flex:1;overflow-y:auto;padding:10px;min-width:280px}
+.lp-body{flex:1;overflow-y:auto;padding:10px;min-width:270px}
 .lp-body::-webkit-scrollbar{width:3px}
 .lp-body::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
 
-/* CENTER */
-.center{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative}
+/* ── CENTER ── */
+.center{flex:1;display:flex;flex-direction:column;overflow:hidden;position:relative;min-width:0}
 
-/* TOAST */
-.toast{position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:100;background:#1a2845;border:1px solid rgba(45,91,227,.4);border-radius:14px;padding:9px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 8px 40px rgba(0,0,0,.8);animation:slideDown .4s ease-out;min-width:260px;max-width:420px;pointer-events:none}
+/* ── TOAST ── */
+.toast{
+  position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:100;
+  background:#1a2845;border:1px solid rgba(45,91,227,.4);border-radius:14px;
+  padding:10px 14px;display:flex;align-items:center;gap:10px;
+  box-shadow:0 8px 40px rgba(0,0,0,.8);animation:slideDown .4s ease-out;
+  min-width:260px;max-width:90vw;pointer-events:none;
+}
 .toast.hidden{display:none}
-.t-icon{font-size:20px;flex-shrink:0}
-.t-title{font-size:11px;font-weight:800;color:#fff}
-.t-body{font-size:10px;color:rgba(255,255,255,.45);margin-top:1px}
+.t-ic{font-size:20px;flex-shrink:0}
+.t-title{font-size:12px;font-weight:800;color:#fff;font-family:'Barlow Condensed',sans-serif;letter-spacing:.04em}
+.t-body{font-size:10px;color:rgba(255,255,255,.45);margin-top:2px}
 .t-time{font-size:9px;color:rgba(255,255,255,.25);margin-left:auto;flex-shrink:0}
 
-/* APP TABS */
+/* ── APP TABS ── */
 .atabs{display:flex;background:#070c18;border-bottom:1px solid var(--border);flex-shrink:0}
-.atab{flex:1;padding:9px 4px;text-align:center;cursor:pointer;border-bottom:2px solid transparent;transition:all .15s;position:relative;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.atab{
+  flex:1;padding:8px 4px 7px;text-align:center;cursor:pointer;
+  border-bottom:2px solid transparent;transition:all .15s;position:relative;
+  touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+}
 .atab:hover{background:rgba(255,255,255,.02)}
 .atab.on{border-bottom-color:var(--blue2)}
-.atab-ic{font-size:17px;display:block}
+.atab-ic{font-size:16px;display:block}
 .atab-lb{font-size:8px;font-weight:700;color:var(--g2);letter-spacing:.04em;text-transform:uppercase;margin-top:2px;display:block}
 .atab.on .atab-lb{color:var(--blue2)}
-.tbadge{position:absolute;top:5px;right:calc(50% - 17px);background:var(--red);color:#fff;font-size:7px;font-weight:800;width:13px;height:13px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.tbadge{position:absolute;top:4px;right:calc(50% - 16px);background:var(--red);color:#fff;font-size:7px;font-weight:800;width:13px;height:13px;border-radius:50%;display:flex;align-items:center;justify-content:center;line-height:1}
 
-/* VIEWS */
+/* ── VIEWS ── */
 .view{flex:1;overflow-y:auto;display:none;padding:12px}
 .view.on{display:block}
 .view::-webkit-scrollbar{width:4px}
 .view::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px}
 
-/* SECTION LABEL */
-.slabel{font-size:10px;font-weight:800;color:var(--g2);text-transform:uppercase;letter-spacing:.12em;margin:10px 0 6px;display:flex;align-items:center;gap:8px}
+/* ── SECTION LABEL ── */
+.slabel{font-size:9px;font-weight:800;color:var(--g2);text-transform:uppercase;letter-spacing:.12em;margin:10px 0 6px;display:flex;align-items:center;gap:8px}
 .slabel::after{content:'';flex:1;height:1px;background:var(--border)}
 
-/* HUB */
+/* ── HUB ── */
 .hub-card{background:var(--card);border:1px solid var(--border2);border-radius:14px;padding:14px;margin-bottom:10px}
-.hub-t{font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:800;color:#fff;margin-bottom:3px}
-.hub-m{font-size:11px;color:var(--g2)}
-.hub-stats{display:flex;gap:16px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
-.hstat-n{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:800;color:#fff;line-height:1}
+.hub-logo-row{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.hub-logo{height:28px;filter:brightness(0) invert(1)}
+.hub-t{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:#fff;line-height:1}
+.hub-m{font-size:11px;color:var(--g2);margin-top:2px}
+.hub-stats{display:flex;gap:20px;padding-top:10px;border-top:1px solid var(--border)}
+.hstat{text-align:center}
+.hstat-n{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:800;color:#fff;line-height:1}
 .hstat-l{font-size:9px;color:var(--g2);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
 .qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
-.qa{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:11px;cursor:pointer;transition:border-color .15s;display:flex;flex-direction:column;gap:4px;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
-.qa:hover{border-color:var(--blue2)}
-.qa-ic{font-size:19px}
-.qa-lb{font-size:12px;font-weight:700;color:rgba(255,255,255,.8)}
+.qa{
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:12px;cursor:pointer;transition:border-color .15s,background .15s;
+  display:flex;flex-direction:column;gap:4px;
+  touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+}
+.qa:hover,.qa:active{border-color:var(--blue2);background:var(--card2)}
+.qa-ic{font-size:20px}
+.qa-lb{font-size:12px;font-weight:700;color:rgba(255,255,255,.85);font-family:'Barlow Condensed',sans-serif;letter-spacing:.02em}
 .qa-sb{font-size:10px;color:var(--g2)}
-.cdbox{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:13px;text-align:center;margin-bottom:10px}
-.cdlbl{font-size:9px;font-weight:800;color:var(--g2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px}
+.cdbox{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:14px;text-align:center;margin-bottom:10px}
+.cdlbl{font-size:9px;font-weight:800;color:var(--g2);text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px}
 .cdnums{display:flex;gap:8px;justify-content:center}
-.cdblk{background:#070c18;border:1px solid var(--border2);border-radius:8px;padding:6px 11px;min-width:48px;text-align:center}
-.cdn{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;color:#fff;line-height:1}
-.cdl{font-size:8px;color:var(--g2);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+.cdblk{background:#070c18;border:1px solid var(--border2);border-radius:10px;padding:8px 14px;min-width:52px;text-align:center}
+.cdn{font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;color:#fff;line-height:1}
+.cdl{font-size:8px;color:var(--g2);text-transform:uppercase;letter-spacing:.07em;margin-top:3px}
 
-/* MATCH CARD */
-.mc{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:11px 13px;margin-bottom:8px;animation:fadeIn .3s ease-out;position:relative;overflow:hidden}
+/* ── MATCH CARDS ── */
+.mc{
+  background:var(--card);border:1px solid var(--border);border-radius:12px;
+  padding:11px 13px;margin-bottom:8px;animation:fadeIn .3s ease-out;
+  position:relative;overflow:hidden;
+}
 .mc.live{border-color:rgba(255,71,87,.3);background:#140e1e}
-.mc.live::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--red)}
-.mc.done{opacity:.55}
+.mc.live::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--red);border-radius:12px 0 0 12px}
+.mc.done{opacity:.5}
 .mc.upcoming{border-color:rgba(45,91,227,.18)}
 .mc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
 .mc-field{font-size:10px;color:var(--g2)}
 .mc-min{font-size:10px;font-weight:800;color:var(--red)}
 .mc-sl{display:grid;grid-template-columns:1fr auto 1fr;gap:8px;align-items:center}
-.mc-team{display:flex;flex-direction:column;gap:2px}
+.mc-team{display:flex;flex-direction:column;gap:3px}
 .mc-team.r{align-items:flex-end;text-align:right}
-.mc-tn{font-size:13px;font-weight:700;color:rgba(255,255,255,.9)}
-.mc-tc{font-size:10px;color:var(--g2)}
-.mc-sb{background:#070c18;border:1px solid var(--border2);border-radius:8px;padding:5px 11px;display:flex;align-items:center;gap:5px}
-.mc-sn{font-family:'Barlow Condensed',sans-serif;font-size:30px;font-weight:800;color:#fff;line-height:1;min-width:16px;text-align:center;transition:color .3s}
+.mc-emoji{font-size:16px;line-height:1}
+.mc-tn{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:rgba(255,255,255,.9);letter-spacing:.02em}
+.mc-tc{font-size:9px;color:var(--g2)}
+.mc-sb{background:#070c18;border:1px solid var(--border2);border-radius:8px;padding:6px 12px;display:flex;align-items:center;gap:6px}
+.mc-sn{font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;color:#fff;line-height:1;min-width:18px;text-align:center;transition:color .3s}
 .mc-sn.dim{color:rgba(255,255,255,.2)}
-.mc-sep{font-size:15px;color:rgba(255,255,255,.15)}
-.mc-goals{margin-top:7px;padding-top:6px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:4px}
+.mc-sep{font-size:16px;color:rgba(255,255,255,.15);font-weight:300}
+.mc-goals{margin-top:8px;padding-top:7px;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:4px}
 .mc-gi{font-size:10px;color:var(--g2)}
 .mc-gi .mn{color:rgba(255,255,255,.5)}
 
-/* STAND */
-.sg-title{font-size:10px;font-weight:800;color:var(--blue2);text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px}
-.stand-t{background:var(--card);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:4px}
-.s-thead{display:grid;grid-template-columns:22px 1fr 26px 26px 26px 32px;gap:4px;padding:6px 13px;background:#070c18}
+/* ── STANDINGS ── */
+.sg-t{font-size:10px;font-weight:800;color:var(--blue2);text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px;font-family:'Barlow Condensed',sans-serif}
+.stand-table{background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin-bottom:4px}
+.s-thead{display:grid;grid-template-columns:22px 1fr 26px 26px 26px 34px;gap:4px;padding:6px 14px;background:#070c18}
 .s-th{font-size:9px;font-weight:700;color:var(--g2);text-transform:uppercase;letter-spacing:.06em;text-align:center}
 .s-th:nth-child(2){text-align:left}
-.s-tr{display:grid;grid-template-columns:22px 1fr 26px 26px 26px 32px;gap:4px;padding:7px 13px;border-top:1px solid var(--border);align-items:center;transition:background .2s}
-.s-tr.hl{background:rgba(45,91,227,.08)}
+.s-tr{display:grid;grid-template-columns:22px 1fr 26px 26px 26px 34px;gap:4px;padding:8px 14px;border-top:1px solid var(--border);align-items:center}
+.s-tr.hl{background:rgba(45,91,227,.07)}
 .s-td{font-size:11px;color:var(--g2);text-align:center}
 .s-td.pos{font-weight:800;color:var(--g3)}
 .s-td.pos.q{color:var(--blue2)}
@@ -150,113 +186,161 @@ html{height:100%}body{background:var(--bg);font-family:'Inter',sans-serif;color:
 .s-td.nm.hl{color:#fff;font-weight:800}
 .s-td.pts{font-weight:800;color:rgba(255,255,255,.7)}
 .s-td.pts.hl{color:#fff}
+.stand-info{font-size:10px;color:var(--g2);margin:5px 0 16px 2px}
 
-/* SCORERS */
-.sc-row{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px 13px;margin-bottom:6px;display:flex;align-items:center;gap:12px;animation:fadeIn .3s ease-out}
-.sc-rank{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:900;color:var(--g3);min-width:24px;text-align:center}
+/* ── TOPSCORERS ── */
+.sc-row{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:10px 14px;margin-bottom:6px;display:flex;align-items:center;gap:12px;animation:fadeIn .3s ease-out}
+.sc-rank{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:900;color:var(--g3);min-width:26px;text-align:center}
 .sc-rank.g{color:var(--gold)}.sc-rank.s{color:#aaa}.sc-rank.b{color:#cd7f32}
-.sc-name{font-size:13px;font-weight:700;color:#fff}
-.sc-team{font-size:10px;color:var(--g2)}
-.sc-goals{font-family:'Barlow Condensed',sans-serif;font-size:28px;font-weight:900;color:#fff;line-height:1}
-.sc-gl{font-size:9px;color:var(--g2);text-align:center;margin-top:1px}
+.sc-name{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:#fff;letter-spacing:.02em}
+.sc-team{font-size:10px;color:var(--g2);margin-top:2px}
+.sc-goals{font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;color:#fff;line-height:1}
+.sc-gl{font-size:9px;color:var(--g2);text-align:center;margin-top:2px}
 
-/* SCHEMA */
-.sch-round{font-size:10px;font-weight:800;color:var(--blue2);text-transform:uppercase;letter-spacing:.12em;margin:10px 0 5px}
-.sch-row{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 11px;margin-bottom:5px;display:flex;align-items:center;gap:10px}
+/* ── SCHEMA ── */
+.sch-round{font-size:10px;font-weight:800;color:var(--blue2);text-transform:uppercase;letter-spacing:.12em;margin:10px 0 5px;font-family:'Barlow Condensed',sans-serif}
+.sch-row{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:9px 12px;margin-bottom:5px;display:flex;align-items:center;gap:10px}
 .sch-row.mt{border-color:rgba(45,91,227,.35);background:rgba(45,91,227,.06)}
 .sch-row.live{border-color:rgba(255,71,87,.3)}
 .sch-row.done{opacity:.5}
-.sch-time{font-size:11px;font-weight:800;color:rgba(255,255,255,.55);min-width:34px}
-.sch-teams{flex:1;font-size:12px;color:rgba(255,255,255,.6)}
-.sch-teams b{color:#fff;font-weight:700}
-.sch-res{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:800;color:#fff}
+.sch-time{font-size:12px;font-weight:700;color:rgba(255,255,255,.5);min-width:36px;font-family:'Barlow Condensed',sans-serif}
+.sch-teams{flex:1;font-size:12px;color:rgba(255,255,255,.55);font-family:'Barlow Condensed',sans-serif}
+.sch-teams b{color:#fff;font-weight:800}
+.sch-res{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:#fff}
 
-/* REF VIEW */
+/* ── REF VIEW ── */
 .ref-view{flex:1;display:none;flex-direction:column;background:#080e1c;overflow-y:auto}
 .ref-view.on{display:flex}
+/* pin screen */
 .ref-pin{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center}
-.ref-logo{height:40px;filter:brightness(0) invert(1);margin-bottom:18px}
-.ref-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:#fff;margin-bottom:5px}
-.ref-sub{font-size:11px;color:var(--g2);margin-bottom:22px}
-.ref-disp{font-family:'Barlow Condensed',sans-serif;font-size:34px;font-weight:900;letter-spacing:.35em;color:#fff;background:#0a1220;border:1px solid rgba(255,255,255,.12);border-radius:12px;padding:12px 18px;margin-bottom:18px;min-width:210px;height:66px;display:flex;align-items:center;justify-content:center;transition:border-color .2s}
-.ref-kp{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;width:210px}
-.rk{background:#1a2540;border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:13px;text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;color:#fff;cursor:pointer;user-select:none;transition:background .1s;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
-.rk:active{background:rgba(45,91,227,.3)}
-.rk.del{font-size:15px;color:var(--g2)}
-.rk.ok{background:var(--red);border-color:var(--red);font-size:13px;letter-spacing:.06em;text-transform:uppercase;grid-column:span 3}
-.rk.ok:active{background:#cc3344}
+.ref-logo{height:44px;filter:brightness(0) invert(1);margin-bottom:20px}
+.ref-pin-title{font-family:'Barlow Condensed',sans-serif;font-size:26px;font-weight:900;color:#fff;margin-bottom:5px;letter-spacing:.02em}
+.ref-pin-sub{font-size:12px;color:var(--g2);margin-bottom:24px;line-height:1.6}
+.ref-disp{
+  font-family:'Barlow Condensed',sans-serif;font-size:38px;font-weight:900;
+  letter-spacing:.35em;color:#fff;background:#0a1220;
+  border:1.5px solid rgba(255,255,255,.12);border-radius:14px;
+  padding:14px 20px;margin-bottom:20px;min-width:220px;height:72px;
+  display:flex;align-items:center;justify-content:center;transition:border-color .2s;
+}
+.ref-kp{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;width:228px}
+.rk{
+  background:var(--card2);border:1px solid var(--border2);border-radius:12px;
+  padding:14px;text-align:center;font-family:'Barlow Condensed',sans-serif;
+  font-size:24px;font-weight:700;color:#fff;cursor:pointer;user-select:none;
+  transition:background .1s,transform .05s;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;
+}
+.rk:active{background:rgba(45,91,227,.35);transform:scale(.95)}
+.rk.del{font-size:16px;color:var(--g2)}
+.rk.ok{
+  background:var(--blue);border-color:var(--blue);
+  font-size:14px;letter-spacing:.08em;text-transform:uppercase;
+  grid-column:span 3;color:#fff;
+}
+.rk.ok:active{background:var(--blue2)}
+/* ref match screen */
 .ref-match{display:none;flex-direction:column;flex:1}
 .ref-match.on{display:flex}
-.ref-mhdr{background:#0f0819;border-bottom:1px solid rgba(255,71,87,.15);padding:11px 14px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-.ref-mhdr-t{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;color:var(--red);letter-spacing:.06em;text-transform:uppercase}
+.ref-mhdr{
+  background:#0c0819;border-bottom:1px solid rgba(255,71,87,.15);
+  padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;
+}
+.ref-mhdr-t{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:var(--red);letter-spacing:.08em;text-transform:uppercase}
 .ref-mhdr-s{font-size:9px;color:rgba(255,255,255,.3);margin-top:2px}
-.ref-score-area{background:linear-gradient(180deg,#150a28 0%,#0d1220 100%);padding:14px 16px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(255,71,87,.1);flex-shrink:0}
-.ref-tb{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
-.ref-tn{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;color:#fff;text-align:center;line-height:1.2}
-.ref-ts{font-family:'Barlow Condensed',sans-serif;font-size:52px;font-weight:900;color:#fff;line-height:1;transition:color .3s}
-.ref-ts.home-color{color:var(--red)}
-.ref-tsep{font-size:22px;color:rgba(255,255,255,.15);font-weight:300;align-self:center}
-.ref-timer{text-align:center;padding:7px;font-size:11px;color:rgba(255,71,87,.8);font-weight:800;letter-spacing:.08em;flex-shrink:0}
-.ref-gbtns{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px 13px;flex-shrink:0}
-.ref-gb{background:var(--card);border:1px solid var(--border2);border-radius:12px;padding:13px 10px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;user-select:none;transition:transform .1s,background .1s;position:relative;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+.ref-score-area{
+  background:linear-gradient(180deg,#160a2a 0%,#0d1220 100%);
+  padding:16px;display:flex;align-items:center;border-bottom:1px solid rgba(255,71,87,.1);flex-shrink:0;
+}
+.ref-tb{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px}
+.ref-te{font-size:26px}
+.ref-tn{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:#fff;text-align:center;line-height:1.2}
+.ref-ts{font-family:'Barlow Condensed',sans-serif;font-size:56px;font-weight:900;color:#fff;line-height:1;transition:color .3s}
+.ref-ts.home{color:var(--red)}
+.ref-tsep{font-size:24px;color:rgba(255,255,255,.15);font-weight:300;align-self:center;flex-shrink:0}
+.ref-timer{text-align:center;padding:8px;font-size:11px;color:rgba(255,71,87,.8);font-weight:800;letter-spacing:.08em;flex-shrink:0}
+.ref-gbtns{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px 14px;flex-shrink:0}
+.ref-gb{
+  background:var(--card);border:1px solid var(--border2);border-radius:14px;
+  padding:14px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;
+  cursor:pointer;user-select:none;transition:transform .1s,background .1s;
+  position:relative;touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+}
 .ref-gb:active{transform:scale(.95)}
 .ref-gb.home{border-color:rgba(45,91,227,.4);background:rgba(45,91,227,.1)}
 .ref-gb.away{border-color:rgba(255,71,87,.3);background:rgba(255,71,87,.07)}
-.ref-gb-icon{font-size:26px}
-.ref-gb-lbl{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:800;color:#fff;text-align:center;line-height:1.2}
-.ref-gb-cnt{position:absolute;top:7px;right:9px;font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:900;color:rgba(255,255,255,.3)}
-.ref-acts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;padding:0 13px 10px;flex-shrink:0}
-.ref-act{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:8px 6px;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;transition:opacity .1s;touch-action:manipulation;-webkit-tap-highlight-color:transparent}
-.ref-act:active{opacity:.6}
-.ref-act-ic{font-size:17px}
-.ref-act-lb{font-size:9px;font-weight:700;color:var(--g2);text-align:center}
-.ref-log{padding:0 13px 10px;flex:1;overflow-y:auto}
-.ref-log-t{font-size:9px;font-weight:800;color:var(--g2);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
-.ref-li{display:flex;align-items:center;gap:7px;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.04);animation:fadeIn .3s ease-out}
-.ref-li-ic{font-size:13px}
-.ref-li-tx{flex:1;font-size:10px;color:rgba(255,255,255,.55)}
-.ref-li-mn{font-size:10px;font-weight:700;color:rgba(255,255,255,.35)}
+.ref-gb-ic{font-size:28px}
+.ref-gb-lb{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:800;color:#fff;text-align:center;line-height:1.2;letter-spacing:.02em}
+.ref-gb-cnt{position:absolute;top:8px;right:10px;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:900;color:rgba(255,255,255,.25)}
+.ref-acts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;padding:0 14px 10px;flex-shrink:0}
+.ref-act{
+  background:var(--card);border:1px solid var(--border);border-radius:10px;
+  padding:9px 6px;display:flex;flex-direction:column;align-items:center;gap:3px;
+  cursor:pointer;transition:opacity .1s,background .1s;
+  touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+}
+.ref-act:active{opacity:.6;background:var(--card2)}
+.ref-act-ic{font-size:18px}
+.ref-act-lb{font-size:9px;font-weight:700;color:var(--g2);text-align:center;font-family:'Barlow Condensed',sans-serif;letter-spacing:.04em;text-transform:uppercase}
+.ref-log{padding:0 14px 10px;flex:1;overflow-y:auto}
+.ref-log-t{font-size:9px;font-weight:800;color:var(--g2);text-transform:uppercase;letter-spacing:.12em;margin-bottom:7px;font-family:'Barlow Condensed',sans-serif}
+.ref-li{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.04);animation:fadeIn .3s ease-out}
+.ref-li-ic{font-size:14px}
+.ref-li-tx{flex:1;font-size:11px;color:rgba(255,255,255,.55)}
+.ref-li-mn{font-size:10px;font-weight:700;color:rgba(255,255,255,.35);font-family:'Barlow Condensed',sans-serif}
 
-/* ORG PANEL ITEMS */
-.op-section{margin-bottom:14px}
-.op-lbl{font-size:9px;font-weight:800;color:var(--g2);text-transform:uppercase;letter-spacing:.12em;margin-bottom:7px;display:flex;align-items:center;gap:6px}
+/* ── ORG PANEL ── */
+.op-lbl{font-size:9px;font-weight:800;color:var(--g2);text-transform:uppercase;letter-spacing:.12em;margin-bottom:8px;display:flex;align-items:center;gap:6px;font-family:'Barlow Condensed',sans-serif}
 .op-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
-.op-stats{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:10px}
-.op-stat{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:9px;text-align:center}
-.op-stat-n{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:#fff}
-.op-stat-n.blue{color:var(--blue2)}
-.op-stat-l{font-size:8px;color:var(--g2);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
-.op-field{background:var(--card);border:1px solid var(--border2);border-radius:8px;padding:9px 11px;margin-bottom:6px}
-.op-fn{font-size:9px;font-weight:800;color:var(--g2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px;display:flex;justify-content:space-between;align-items:center}
-.op-fs{text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;color:#fff}
-.op-match{background:var(--card);border:1px solid var(--border2);border-radius:8px;padding:9px 11px;margin-bottom:6px}
+.op-stats{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:12px}
+.op-stat{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:10px;text-align:center}
+.op-sn{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:#fff;line-height:1}
+.op-sn.blue{color:var(--blue2)}
+.op-sl{font-size:8px;color:var(--g2);text-transform:uppercase;letter-spacing:.06em;margin-top:3px}
+.op-section{margin-bottom:14px}
+.op-field{background:var(--card);border:1px solid var(--border2);border-radius:10px;padding:10px 12px;margin-bottom:6px}
+.op-fn{font-size:9px;font-weight:800;color:var(--g2);text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px;display:flex;justify-content:space-between;align-items:center;font-family:'Barlow Condensed',sans-serif}
+.op-fs{text-align:center;font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:800;color:#fff}
+.op-match{background:var(--card);border:1px solid var(--border2);border-radius:10px;padding:10px 12px;margin-bottom:6px}
 .op-mhdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
-.op-mn{font-size:11px;font-weight:700;color:var(--g1)}
-.op-ms{font-size:9px;font-weight:700}
-.op-score{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:7px}
-.op-sn{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:#fff}
-.op-ssep{font-size:13px;color:var(--g3)}
+.op-mn{font-size:11px;font-weight:700;color:var(--g1);font-family:'Barlow Condensed',sans-serif;letter-spacing:.02em}
+.op-ms{font-size:9px;font-weight:700;font-family:'Barlow Condensed',sans-serif}
+.op-score{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:8px}
+.op-snum{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:#fff;line-height:1}
+.op-ssep{font-size:14px;color:var(--g3);font-weight:300}
 .op-btns{display:flex;gap:5px}
-.gb{flex:1;padding:7px 5px;border-radius:6px;border:none;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:3px;transition:all .1s;touch-action:manipulation}
+.gb{
+  flex:1;padding:7px 5px;border-radius:8px;border:none;
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;
+  letter-spacing:.05em;text-transform:uppercase;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:3px;
+  transition:all .1s;touch-action:manipulation;
+}
 .gb:active{transform:scale(.96)}
 .gb.h{background:rgba(45,91,227,.2);border:1px solid rgba(45,91,227,.4);color:var(--blue2)}
 .gb.a{background:rgba(255,71,87,.15);border:1px solid rgba(255,71,87,.3);color:var(--red)}
 .gb.u{background:transparent;border:1px solid var(--border2);color:var(--g2)}
-.mb{width:100%;padding:7px;border-radius:6px;border:none;font-family:'Barlow Condensed',sans-serif;font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;margin-top:5px;touch-action:manipulation}
+.mb{
+  width:100%;padding:8px;border-radius:8px;border:none;
+  font-family:'Barlow Condensed',sans-serif;font-size:11px;font-weight:800;
+  letter-spacing:.06em;text-transform:uppercase;cursor:pointer;margin-top:5px;
+  touch-action:manipulation;
+}
 .mb.start{background:var(--green);color:#070c18}
 .mb.end{background:var(--red);color:#fff}
-.mb.notif{background:rgba(45,91,227,.2);border:1px solid rgba(45,91,227,.4);color:var(--blue2);margin-top:3px}
+.mb.notif{background:rgba(45,91,227,.15);border:1px solid rgba(45,91,227,.3);color:var(--blue2)}
+.mb:active{opacity:.8}
 
-/* LOAD BAR */
-.loadbar{background:var(--surf);border-top:1px solid var(--border);padding:8px 14px;flex-shrink:0}
-.lb-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.lb-lbl{font-size:10px;font-weight:700;color:var(--g2);white-space:nowrap}
-.lb-val{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:800;color:var(--blue2);min-width:44px}
-.lb-slider{flex:1;min-width:80px;accent-color:var(--blue2)}
+/* ── LOAD BAR ── */
+.loadbar{background:var(--surf);border-top:1px solid var(--border);padding:7px 14px;flex-shrink:0}
+.lb-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.lb-lbl{font-size:10px;font-weight:600;color:var(--g2);white-space:nowrap}
+.lb-val{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:800;color:var(--blue2);min-width:42px}
+.lb-slider{flex:1;min-width:80px;accent-color:var(--blue2);cursor:pointer}
 .lb-bars{display:flex;gap:2px;align-items:flex-end;height:18px;flex-shrink:0}
 .lb-bar{width:3px;background:var(--border2);border-radius:2px;transition:height .3s,background .3s}
 .lm{font-size:10px;color:var(--g2);white-space:nowrap}
-.lm b{color:#fff}
+.lm b{color:#fff;font-weight:700}
 </style>
 </head>
 <body>
@@ -265,23 +349,24 @@ html{height:100%}body{background:var(--bg);font-family:'Inter',sans-serif;color:
 <div class="topbar">
   <img class="tb-logo" src="data:image/png;base64,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" alt="UFT">
   <div class="tb-div"></div>
-  <span class="tb-name">Live Demo</span>
+  <span class="tb-name">UFT App</span>
   <div class="tb-modes">
     <button class="tb-mode pub-on" onclick="setMode('pub')" id="btn-pub">👥 Ouder/Coach</button>
     <button class="tb-mode" onclick="setMode('ref')" id="btn-ref">🟡 Scheidsrechter</button>
     <button class="tb-mode" onclick="setMode('org')" id="btn-org">🏆 Organisator</button>
   </div>
-  <div class="tb-spacer"></div>
-  <div class="pill-live"><span class="pdot" style="color:var(--red)"></span>LIVE</div>
-  <div class="pill-users">👥 <span id="uc">247</span> online</div>
+  <div class="tb-right">
+    <div class="pill-live"><span class="pdot" style="color:var(--red)"></span>LIVE</div>
+    <div class="pill-users">👥 <span id="uc">247</span></div>
+  </div>
 </div>
 
 <div class="main">
-  <!-- LEFT PANEL (org only) -->
+  <!-- LEFT PANEL -->
   <div class="lpanel panel-hidden" id="lpanel">
     <div class="lp-hdr">
-      <div class="lp-title">Organisator Dashboard</div>
-      <div class="lp-sub">Beheer het toernooi live</div>
+      <div class="lp-title">Organisator</div>
+      <div class="lp-sub">Live toernooi beheer</div>
     </div>
     <div class="lp-body" id="lp-body"></div>
   </div>
@@ -290,39 +375,68 @@ html{height:100%}body{background:var(--bg);font-family:'Inter',sans-serif;color:
   <div class="center">
     <!-- TOAST -->
     <div class="toast hidden" id="toast">
-      <span class="t-icon" id="t-icon">⚽</span>
-      <div><div class="t-title" id="t-title">DOELPUNT</div><div class="t-body" id="t-body">...</div></div>
+      <span class="t-ic" id="t-ic">⚽</span>
+      <div>
+        <div class="t-title" id="t-title">DOELPUNT</div>
+        <div class="t-body" id="t-body">...</div>
+      </div>
       <div class="t-time">nu</div>
     </div>
 
-    <!-- APP TABS -->
+    <!-- TABS -->
     <div class="atabs" id="atabs">
-      <div class="atab on" onclick="setTab('hub')" id="tab-hub"><span class="atab-ic">🏠</span><span class="atab-lb">Hub</span></div>
-      <div class="atab" onclick="setTab('live')" id="tab-live" style="position:relative"><span class="atab-ic">⚡</span><span class="atab-lb">Live</span><div class="tbadge" id="lbadge">2</div></div>
-      <div class="atab" onclick="setTab('stand')" id="tab-stand"><span class="atab-ic">📊</span><span class="atab-lb">Stand</span></div>
-      <div class="atab" onclick="setTab('scores')" id="tab-scores"><span class="atab-ic">🏆</span><span class="atab-lb">Scorers</span></div>
-      <div class="atab" onclick="setTab('schema')" id="tab-schema"><span class="atab-ic">📅</span><span class="atab-lb">Schema</span></div>
+      <div class="atab on" onclick="setTab('hub')" id="tab-hub">
+        <span class="atab-ic">🏠</span><span class="atab-lb">Hub</span>
+      </div>
+      <div class="atab" onclick="setTab('live')" id="tab-live" style="position:relative">
+        <span class="atab-ic">⚡</span><span class="atab-lb">Live</span>
+        <div class="tbadge" id="lbadge">2</div>
+      </div>
+      <div class="atab" onclick="setTab('stand')" id="tab-stand">
+        <span class="atab-ic">📊</span><span class="atab-lb">Stand</span>
+      </div>
+      <div class="atab" onclick="setTab('scores')" id="tab-scores">
+        <span class="atab-ic">🏆</span><span class="atab-lb">Scorers</span>
+      </div>
+      <div class="atab" onclick="setTab('schema')" id="tab-schema">
+        <span class="atab-ic">📅</span><span class="atab-lb">Schema</span>
+      </div>
     </div>
 
-    <!-- HUB -->
+    <!-- HUB VIEW -->
     <div class="view on" id="view-hub">
       <div class="hub-card">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
-          <img src="data:image/png;base64,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" style="height:26px;filter:brightness(0) invert(1)">
-          <div><div class="hub-t">Haarlemmermeer Cup</div><div class="hub-m">FC VVC · Nieuw-Vennep · 14 juni 2025</div></div>
+        <div class="hub-logo-row">
+          <img class="hub-logo" src="data:image/png;base64,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" alt="UFT">
+          <div>
+            <div class="hub-t">Haarlemmermeer Cup</div>
+            <div class="hub-m">FC VVC · Nieuw-Vennep · 14 juni 2025</div>
+          </div>
         </div>
         <div class="hub-stats">
-          <div><div class="hstat-n" id="h-live">2</div><div class="hstat-l">Live</div></div>
-          <div><div class="hstat-n" id="h-goals">0</div><div class="hstat-l">Goals</div></div>
-          <div><div class="hstat-n">O10</div><div class="hstat-l">Categ.</div></div>
-          <div><div class="hstat-n" id="h-users">247</div><div class="hstat-l">Online</div></div>
+          <div class="hstat"><div class="hstat-n" id="h-live">2</div><div class="hstat-l">Live</div></div>
+          <div class="hstat"><div class="hstat-n" id="h-goals">0</div><div class="hstat-l">Goals</div></div>
+          <div class="hstat"><div class="hstat-n">O10</div><div class="hstat-l">Categ.</div></div>
+          <div class="hstat"><div class="hstat-n" id="h-users">247</div><div class="hstat-l">Online</div></div>
         </div>
       </div>
       <div class="qa-grid">
-        <div class="qa" onclick="setTab('live')"><span class="qa-ic">⚡</span><span class="qa-lb">Live scores</span><span class="qa-sb" id="qa-live">2 live</span></div>
-        <div class="qa" onclick="setTab('stand')"><span class="qa-ic">📊</span><span class="qa-lb">Standen</span><span class="qa-sb">Poule A & B</span></div>
-        <div class="qa" onclick="setTab('schema')"><span class="qa-ic">📅</span><span class="qa-lb">Schema</span><span class="qa-sb">Ronde 2 actief</span></div>
-        <div class="qa" onclick="setTab('scores')"><span class="qa-ic">🏆</span><span class="qa-lb">Topscorers</span><span class="qa-sb" id="qa-top">Laden...</span></div>
+        <div class="qa" onclick="setTab('live')">
+          <span class="qa-ic">⚡</span><span class="qa-lb">Live scores</span>
+          <span class="qa-sb" id="qa-live">2 wedstrijden live</span>
+        </div>
+        <div class="qa" onclick="setTab('stand')">
+          <span class="qa-ic">📊</span><span class="qa-lb">Standen</span>
+          <span class="qa-sb">Poule A &amp; B</span>
+        </div>
+        <div class="qa" onclick="setTab('schema')">
+          <span class="qa-ic">📅</span><span class="qa-lb">Schema</span>
+          <span class="qa-sb">Ronde 2 actief</span>
+        </div>
+        <div class="qa" onclick="setTab('scores')">
+          <span class="qa-ic">🏆</span><span class="qa-lb">Topscorers</span>
+          <span class="qa-sb" id="qa-top">Laden...</span>
+        </div>
       </div>
       <div class="cdbox">
         <div class="cdlbl">Finale begint over</div>
@@ -334,21 +448,22 @@ html{height:100%}body{background:var(--bg);font-family:'Inter',sans-serif;color:
       </div>
     </div>
 
-    <!-- LIVE -->
+    <!-- LIVE VIEW -->
     <div class="view" id="view-live"><div id="live-c"></div></div>
-    <!-- STAND -->
+    <!-- STAND VIEW -->
     <div class="view" id="view-stand"><div id="stand-c"></div></div>
-    <!-- SCORES -->
+    <!-- SCORES VIEW -->
     <div class="view" id="view-scores"><div id="scores-c"></div></div>
-    <!-- SCHEMA -->
+    <!-- SCHEMA VIEW -->
     <div class="view" id="view-schema"><div id="schema-c"></div></div>
 
     <!-- REF VIEW -->
     <div class="ref-view" id="ref-view">
+      <!-- PIN -->
       <div class="ref-pin" id="ref-pin">
         <img class="ref-logo" src="data:image/png;base64,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" alt="UFT">
-        <div class="ref-title">Scheidsrechter Login</div>
-        <div class="ref-sub">Voer je 5-cijferige wedstrijd-PIN in<br>Je ontvangt deze van UFT voor de wedstrijd</div>
+        <div class="ref-pin-title">Scheidsrechter Login</div>
+        <div class="ref-pin-sub">Voer je 5-cijferige wedstrijd-PIN in.<br>Je ontvangt deze van UFT vóór de wedstrijd.</div>
         <div class="ref-disp" id="ref-disp">_ _ _ _ _</div>
         <div class="ref-kp">
           <div class="rk" onclick="rk('1')">1</div><div class="rk" onclick="rk('2')">2</div><div class="rk" onclick="rk('3')">3</div>
@@ -357,22 +472,30 @@ html{height:100%}body{background:var(--bg);font-family:'Inter',sans-serif;color:
           <div class="rk del" onclick="rk('d')">⌫</div><div class="rk" onclick="rk('0')">0</div>
           <div class="rk ok" onclick="rk('ok')">Bevestig →</div>
         </div>
-        <div style="margin-top:14px;font-size:11px;color:var(--g2)">Demo PINs: <b style="color:var(--blue2)">48291</b> · <b style="color:var(--blue2)">73614</b></div>
+        <div style="margin-top:16px;font-size:11px;color:var(--g2)">
+          Demo PINs: <b style="color:var(--blue2)">48291</b> &nbsp;·&nbsp; <b style="color:var(--blue2)">73614</b>
+        </div>
       </div>
+      <!-- MATCH -->
       <div class="ref-match" id="ref-match">
         <div class="ref-mhdr">
-          <div><div class="ref-mhdr-t" id="rm-field">Veld A · Ronde 2</div><div class="ref-mhdr-s" id="rm-sub">Ingelogd via PIN</div></div>
-          <button onclick="rLogout()" style="background:transparent;border:1px solid var(--border2);border-radius:5px;color:var(--g2);font-size:10px;padding:4px 8px;cursor:pointer">Uitloggen</button>
+          <div>
+            <div class="ref-mhdr-t" id="rm-field">Veld A · Ronde 2</div>
+            <div class="ref-mhdr-s" id="rm-sub">Ingelogd via PIN</div>
+          </div>
+          <button onclick="rLogout()" style="background:transparent;border:1px solid var(--border2);border-radius:8px;color:var(--g2);font-size:11px;padding:5px 10px;cursor:pointer;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.04em;touch-action:manipulation">UITLOGGEN</button>
         </div>
         <div class="ref-score-area">
           <div class="ref-tb">
-            <div style="font-size:22px" id="rm-he">🔵</div>
+            <div class="ref-te" id="rm-he">🔵</div>
             <div class="ref-tn" id="rm-hn">UFT O10</div>
-            <div class="ref-ts home-color" id="rm-hs">0</div>
+            <div class="ref-ts home" id="rm-hs">0</div>
           </div>
-          <div style="display:flex;flex-direction:column;align-items:center"><div class="ref-tsep">–</div></div>
+          <div style="display:flex;flex-direction:column;align-items:center">
+            <div class="ref-tsep">–</div>
+          </div>
           <div class="ref-tb">
-            <div style="font-size:22px" id="rm-ae">🔴</div>
+            <div class="ref-te" id="rm-ae">🔴</div>
             <div class="ref-tn" id="rm-an">Ajax O10</div>
             <div class="ref-ts" id="rm-as">0</div>
           </div>
@@ -381,13 +504,13 @@ html{height:100%}body{background:var(--bg);font-family:'Inter',sans-serif;color:
         <div class="ref-gbtns">
           <div class="ref-gb home" onclick="rGoal('h')">
             <div class="ref-gb-cnt" id="rm-hc">0</div>
-            <div class="ref-gb-icon">⚽</div>
-            <div class="ref-gb-lbl" id="rm-hlbl">Doelpunt<br>UFT O10</div>
+            <div class="ref-gb-ic">⚽</div>
+            <div class="ref-gb-lb" id="rm-hlbl">Doelpunt<br>UFT O10</div>
           </div>
           <div class="ref-gb away" onclick="rGoal('a')">
             <div class="ref-gb-cnt" id="rm-ac">0</div>
-            <div class="ref-gb-icon">⚽</div>
-            <div class="ref-gb-lbl" id="rm-albl">Doelpunt<br>Ajax O10</div>
+            <div class="ref-gb-ic">⚽</div>
+            <div class="ref-gb-lb" id="rm-albl">Doelpunt<br>Ajax O10</div>
           </div>
         </div>
         <div class="ref-acts">
@@ -411,7 +534,6 @@ html{height:100%}body{background:var(--bg);font-family:'Inter',sans-serif;color:
         <div class="lb-bars" id="lb-bars"></div>
         <span class="lm">Latency: <b id="lat">18ms</b></span>
         <span class="lm">WS: <b id="wsc">247</b></span>
-        <span class="lm">DB: <b id="dbc">12 q/s</b></span>
         <span class="lm">Status: <b id="stc" style="color:var(--green)">✓ OK</b></span>
       </div>
     </div>
@@ -419,7 +541,7 @@ html{height:100%}body{background:var(--bg);font-family:'Inter',sans-serif;color:
 </div>
 
 <script>
-// DATA
+// ═══ DATA ═══
 const TEAMS={
   'UFT O10':{e:'🔵',p:'Poule A'},'Ajax O10':{e:'🔴',p:'Poule A'},
   'Feyenoord':{e:'🔴',p:'Poule A'},'AC Milan':{e:'⚫',p:'Poule A'},
@@ -450,25 +572,27 @@ let M=[
   {id:6,time:'12:30',field:'Hoofdveld',round:4,home:'Winnaar A',away:'Winnaar B',hs:null,as:null,st:'upcoming',min:0,goals:[]}
 ];
 
-let mode='pub',tab='hub',simU=247,cds=6413;
-let rPin='',rMid=null,rHalfNum=1,rMin=0,rInv=null;
+// ═══ STATE ═══
+let mode='pub', tab='hub', simU=247, cds=6413;
+let rPin='', rMid=null, rHalfNum=1, rMin=0, rInv=null;
 
-// COUNTDOWN
+// ═══ COUNTDOWN ═══
 setInterval(()=>{
   if(cds>0)cds--;
-  document.getElementById('cd-h').textContent=String(Math.floor(cds/3600)).padStart(2,'0');
-  document.getElementById('cd-m').textContent=String(Math.floor((cds%3600)/60)).padStart(2,'0');
-  document.getElementById('cd-s').textContent=String(cds%60).padStart(2,'0');
+  const h=Math.floor(cds/3600),m=Math.floor((cds%3600)/60),s=cds%60;
+  document.getElementById('cd-h').textContent=String(h).padStart(2,'0');
+  document.getElementById('cd-m').textContent=String(m).padStart(2,'0');
+  document.getElementById('cd-s').textContent=String(s).padStart(2,'0');
 },1000);
 
-// MINUTE TICKER
+// ═══ MINUTE TICKER ═══
 setInterval(()=>{
   M.forEach(m=>{if(m.st==='live')m.min=Math.min(m.min+1,45)});
   if(tab==='live')rLive();
   if(rMid!==null){rMin++;updRTimer();}
 },15000);
 
-// USER DRIFT
+// ═══ USER DRIFT ═══
 setInterval(()=>{
   simU=Math.max(1,Math.min(2000,simU+Math.round((Math.random()-.5)*8)));
   document.getElementById('uc').textContent=simU.toLocaleString('nl');
@@ -478,7 +602,7 @@ setInterval(()=>{
   updLoad(simU);
 },3000);
 
-// AUTO GOALS (demo feel)
+// ═══ AUTO GOALS (demo) ═══
 let agi=0;
 setInterval(()=>{
   const lv=M.filter(m=>m.st==='live');
@@ -486,18 +610,15 @@ setInterval(()=>{
   const m=lv[agi%lv.length];agi++;
   const s=Math.random()>.5?'h':'a';
   const tn=s==='h'?m.home:m.away;
-  const p=(PL[tn]||['Onbekend'])[Math.floor(Math.random()*(PL[tn]||['Onbekend']).length)];
+  const p=(PL[tn]||['Onbekend'])[Math.floor(Math.random()*(PL[tn]||[]).length)];
   if(s==='h')m.hs++;else m.as++;
   m.goals.push({t:s,p,m:m.min});
-  toast('⚽','DOELPUNT — '+p,m.home+' '+m.hs+'–'+m.as+' '+m.away+' · '+m.min+"'");
-  if(tab==='live')rLive();
-  if(tab==='scores')rScores();
-  if(tab==='stand')rStand();
-  if(tab==='hub')rHub();
+  showToast('⚽','DOELPUNT — '+p,m.home+' '+m.hs+'–'+m.as+' '+m.away+' · '+m.min+"'");
+  if(tab==='live')rLive();if(tab==='scores')rScores();if(tab==='stand')rStand();rHub();
   if(mode==='org')rOrg();
-},20000);
+},22000);
 
-// MODE
+// ═══ MODE ═══
 function setMode(m){
   mode=m;
   ['pub','ref','org'].forEach(x=>document.getElementById('btn-'+x).className='tb-mode');
@@ -507,22 +628,31 @@ function setMode(m){
   const at=document.getElementById('atabs');
   const lb=document.getElementById('loadbar');
   document.querySelectorAll('.view').forEach(v=>v.classList.remove('on'));
-  if(m==='pub'){lp.classList.add('panel-hidden');rv.classList.remove('on');at.style.display='flex';lb.style.display='block';setTab(tab);}
-  else if(m==='ref'){lp.classList.add('panel-hidden');rv.classList.add('on');at.style.display='none';lb.style.display='none';}
-  else{lp.classList.remove('panel-hidden');rv.classList.remove('on');at.style.display='flex';lb.style.display='block';rOrg();setTab('live');}
+  if(m==='pub'){
+    lp.classList.add('panel-hidden');rv.classList.remove('on');
+    at.style.display='flex';lb.style.display='block';setTab(tab);
+  } else if(m==='ref'){
+    lp.classList.add('panel-hidden');rv.classList.add('on');
+    at.style.display='none';lb.style.display='none';
+  } else {
+    lp.classList.remove('panel-hidden');rv.classList.remove('on');
+    at.style.display='flex';lb.style.display='block';rOrg();setTab('live');
+  }
 }
 
-// TAB
+// ═══ TAB ═══
 function setTab(t){
   tab=t;
   document.querySelectorAll('.atab').forEach(el=>el.classList.remove('on'));
   document.querySelectorAll('.view').forEach(el=>el.classList.remove('on'));
-  const te=document.getElementById('tab-'+t);const ve=document.getElementById('view-'+t);
+  const te=document.getElementById('tab-'+t);
+  const ve=document.getElementById('view-'+t);
   if(te)te.classList.add('on');if(ve)ve.classList.add('on');
-  if(t==='live')rLive();else if(t==='stand')rStand();else if(t==='scores')rScores();else if(t==='schema')rSchema();else rHub();
+  if(t==='live')rLive();else if(t==='stand')rStand();
+  else if(t==='scores')rScores();else if(t==='schema')rSchema();else rHub();
 }
 
-// RENDER HUB
+// ═══ HUB ═══
 function rHub(){
   const lc=M.filter(m=>m.st==='live').length;
   const tg=allGoals().length;
@@ -534,31 +664,43 @@ function rHub(){
   document.getElementById('qa-top').textContent=top?top.n.split(' ')[0]+' · '+top.g+' goals':'Nog geen goals';
 }
 
-// RENDER LIVE
+// ═══ LIVE ═══
 function rLive(){
   const lv=M.filter(m=>m.st==='live');
   const up=M.filter(m=>m.st==='upcoming');
   const dn=M.filter(m=>m.st==='done');
   let h='';
-  if(lv.length){h+='<div class="slabel"><span class="pdot" style="color:var(--red)"></span>Nu bezig</div>';lv.forEach(m=>h+=mcHtml(m));}
-  if(up.length){h+='<div class="slabel">Volgende</div>';up.slice(0,3).forEach(m=>h+=mcHtml(m));}
-  if(dn.length){h+='<div class="slabel">Gespeeld</div>';dn.forEach(m=>h+=mcHtml(m));}
+  if(lv.length){h+='<div class="slabel"><span class="pdot" style="color:var(--red)"></span>Nu bezig</div>';lv.forEach(m=>h+=mcH(m));}
+  if(up.length){h+='<div class="slabel">Volgende wedstrijden</div>';up.slice(0,3).forEach(m=>h+=mcH(m));}
+  if(dn.length){h+='<div class="slabel">Gespeeld</div>';dn.forEach(m=>h+=mcH(m));}
   document.getElementById('live-c').innerHTML=h;
   document.getElementById('lbadge').textContent=lv.length;
 }
-function mcHtml(m){
+function mcH(m){
   const il=m.st==='live',id=m.st==='done',iu=m.st==='upcoming';
   const he=TEAMS[m.home]?.e||'⚽',ae=TEAMS[m.away]?.e||'⚽';
-  let stbadge=il?`<span style="display:flex;align-items:center;gap:4px;font-size:10px;font-weight:800;color:var(--red)"><span class="pdot" style="color:var(--red)"></span>${m.min}'</span>`:id?`<span style="font-size:10px;color:var(--g2);font-weight:600">Afgelopen</span>`:`<span style="font-size:10px;color:var(--blue2);font-weight:800">${m.time}</span>`;
-  let scoreH=iu?`<div class="mc-sb"><span style="font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:var(--g3);padding:0 8px">VS</span></div>`:`<div class="mc-sb"><span class="mc-sn${il?'':' dim'}">${m.hs}</span><span class="mc-sep">–</span><span class="mc-sn${il?'':' dim'}">${m.as}</span></div>`;
-  let gl=m.goals.length?`<div class="mc-goals">${m.goals.map((g,i)=>`<span class="mc-gi">${g.t==='h'?'⚽':''} ${g.p.split(' ')[0][0]+'.'+g.p.split(' ').pop()} <span class="mn">${g.m}'</span>${i<m.goals.length-1?' · ':''}</span>`).join('')}</div>`:'';
-  return `<div class="mc ${m.st}"><div class="mc-top"><span class="mc-field">📍 ${m.field}</span>${stbadge}</div><div class="mc-sl"><div class="mc-team"><span style="font-size:15px">${he}</span><span class="mc-tn">${m.home}</span><span class="mc-tc">${TEAMS[m.home]?.p||''}</span></div>${scoreH}<div class="mc-team r"><span style="font-size:15px">${ae}</span><span class="mc-tn">${m.away}</span><span class="mc-tc">${TEAMS[m.away]?.p||''}</span></div></div>${gl}</div>`;
+  const badge=il
+    ?`<span style="display:flex;align-items:center;gap:4px;font-size:10px;font-weight:800;color:var(--red)"><span class="pdot" style="color:var(--red)"></span>${m.min}'</span>`
+    :id?`<span style="font-size:10px;color:var(--g2);font-weight:600">Afgelopen</span>`
+    :`<span style="font-size:10px;color:var(--blue2);font-weight:700;font-family:'Barlow Condensed',sans-serif">${m.time}</span>`;
+  const scoreH=iu
+    ?`<div class="mc-sb"><span style="font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;color:var(--g3);padding:0 10px">VS</span></div>`
+    :`<div class="mc-sb"><span class="mc-sn${il?'':' dim'}">${m.hs}</span><span class="mc-sep">–</span><span class="mc-sn${il?'':' dim'}">${m.as}</span></div>`;
+  const gl=m.goals.length
+    ?`<div class="mc-goals">${m.goals.map((g,i)=>`<span class="mc-gi">${g.t==='h'?'⚽':''} ${g.p.split(' ')[0][0]+'.'+g.p.split(' ').pop()} <span class="mn">${g.m}'</span>${i<m.goals.length-1?' · ':''}</span>`).join('')}</div>`:'';
+  return `<div class="mc ${m.st}">
+    <div class="mc-top"><span class="mc-field">📍 ${m.field}</span>${badge}</div>
+    <div class="mc-sl">
+      <div class="mc-team"><span class="mc-emoji">${he}</span><span class="mc-tn">${m.home}</span><span class="mc-tc">${TEAMS[m.home]?.p||''}</span></div>
+      ${scoreH}
+      <div class="mc-team r"><span class="mc-emoji">${ae}</span><span class="mc-tn">${m.away}</span><span class="mc-tc">${TEAMS[m.away]?.p||''}</span></div>
+    </div>${gl}</div>`;
 }
 
-// STANDINGS
+// ═══ STAND ═══
 function standings(poule){
   const ts=Object.keys(TEAMS).filter(t=>TEAMS[t].p===poule);
-  const s={};ts.forEach(t=>s[t]={pl:0,w:0,d:0,l:0,gf:0,ga:0,pts:0});
+  const s={};ts.forEach(t=>s[t]={w:0,d:0,l:0,gf:0,ga:0,pts:0,pl:0});
   M.filter(m=>m.st!=='upcoming').forEach(m=>{
     if(!s[m.home]||!s[m.away])return;
     s[m.home].pl++;s[m.away].pl++;
@@ -574,17 +716,25 @@ function rStand(){
   let h='';
   ['Poule A','Poule B'].forEach(p=>{
     const rows=standings(p);
-    h+=`<div style="margin-bottom:14px"><div class="sg-title">${p}</div><div class="stand-t"><div class="s-thead"><span class="s-th">#</span><span class="s-th" style="text-align:left">Team</span><span class="s-th">W</span><span class="s-th">V</span><span class="s-th">Dgl</span><span class="s-th">Ptn</span></div>`;
+    h+=`<div style="margin-bottom:16px"><div class="sg-t">${p}</div>
+    <div class="stand-table">
+    <div class="s-thead"><span class="s-th">#</span><span class="s-th" style="text-align:left">Team</span><span class="s-th">W</span><span class="s-th">V</span><span class="s-th">Dgl</span><span class="s-th">Ptn</span></div>`;
     rows.forEach((r,i)=>{
       const hl=r.n.includes('UFT'),q=i<2;
-      h+=`<div class="s-tr ${hl?'hl':''}"><span class="s-td pos ${q?'q':''}">${i+1}</span><span class="s-td nm ${hl?'hl':''}">${r.n}</span><span class="s-td">${r.w}</span><span class="s-td">${r.l}</span><span class="s-td">${r.gf-r.ga>0?'+':''}${r.gf-r.ga}</span><span class="s-td pts ${hl?'hl':''}">${r.pts}</span></div>`;
+      h+=`<div class="s-tr ${hl?'hl':''}">
+        <span class="s-td pos ${q?'q':''}">${i+1}</span>
+        <span class="s-td nm ${hl?'hl':''}">${r.n}</span>
+        <span class="s-td">${r.w}</span><span class="s-td">${r.l}</span>
+        <span class="s-td">${r.gf-r.ga>0?'+':''}${r.gf-r.ga}</span>
+        <span class="s-td pts ${hl?'hl':''}">${r.pts}</span>
+      </div>`;
     });
-    h+=`</div><div style="font-size:10px;color:var(--g2);margin:5px 0 0 2px">↑ Top 2 door naar halve finale</div></div>`;
+    h+=`</div><div class="stand-info">↑ Top 2 gaan door naar de halve finale</div></div>`;
   });
   document.getElementById('stand-c').innerHTML=h;
 }
 
-// SCORERS
+// ═══ SCORERS ═══
 function allGoals(){const a=[];M.forEach(m=>m.goals.forEach(g=>a.push({...g,mh:m.home,ma:m.away})));return a;}
 function topScorers(){
   const c={};
@@ -594,16 +744,22 @@ function topScorers(){
 function rScores(){
   const sc=topScorers();
   let h='<div class="slabel">Topscorers</div>';
-  if(!sc.length){h+='<div style="color:var(--g2);font-size:13px;padding:16px 0;text-align:center">Nog geen doelpunten — score een goal via Scheidsrechter of Organisator modus</div>';}
+  if(!sc.length){
+    h+='<div style="color:var(--g2);font-size:13px;padding:24px 0;text-align:center;line-height:1.6">Nog geen doelpunten.<br><span style="font-size:11px">Score een goal via Scheidsrechter<br>of Organisator modus.</span></div>';
+  }
   sc.forEach((s,i)=>{
     const rc=i===0?'g':i===1?'s':i===2?'b':'';
     const ri=i===0?'🥇':i===1?'🥈':i===2?'🥉':i+1;
-    h+=`<div class="sc-row"><div class="sc-rank ${rc}">${ri}</div><div style="flex:1"><div class="sc-name">${s.n}</div><div class="sc-team">${s.team}</div></div><div style="text-align:center"><div class="sc-goals">${s.g}</div><div class="sc-gl">goals</div></div></div>`;
+    h+=`<div class="sc-row">
+      <div class="sc-rank ${rc}">${ri}</div>
+      <div style="flex:1"><div class="sc-name">${s.n}</div><div class="sc-team">${s.team}</div></div>
+      <div style="text-align:center"><div class="sc-goals">${s.g}</div><div class="sc-gl">goals</div></div>
+    </div>`;
   });
   document.getElementById('scores-c').innerHTML=h;
 }
 
-// SCHEMA
+// ═══ SCHEMA ═══
 function rSchema(){
   const rounds=[...new Set(M.map(m=>m.round))];
   let h='';
@@ -611,28 +767,39 @@ function rSchema(){
     const rm=M.filter(m=>m.round===r);
     h+=`<div class="sch-round">Ronde ${r} · ${rm[0].time}</div>`;
     rm.forEach(m=>{
-      const il=m.st==='live',id=m.st==='done',imt=m.home.includes('UFT')||m.away.includes('UFT');
-      let res=id?`<span class="sch-res">${m.hs}–${m.as}</span>`:il?`<span style="font-size:10px;font-weight:800;color:var(--red)">LIVE ${m.hs}–${m.as}</span>`:`<span style="font-size:10px;color:var(--g2)">${m.field}</span>`;
-      h+=`<div class="sch-row ${imt?'mt':''} ${il?'live':''} ${id?'done':''}"><span class="sch-time">${m.time}</span><span class="sch-teams">${imt?`<b>${m.home}</b>`:m.home} <span style="color:var(--g3)">vs</span> ${imt?`<b>${m.away}</b>`:m.away}</span>${res}</div>`;
+      const il=m.st==='live',id=m.st==='done';
+      const imt=m.home.includes('UFT')||m.away.includes('UFT');
+      const res=id?`<span class="sch-res">${m.hs}–${m.as}</span>`:il?`<span style="font-size:10px;font-weight:800;color:var(--red)">LIVE ${m.hs}–${m.as}</span>`:`<span style="font-size:10px;color:var(--g2)">${m.field}</span>`;
+      h+=`<div class="sch-row ${imt?'mt':''} ${il?'live':''} ${id?'done':''}">
+        <span class="sch-time">${m.time}</span>
+        <span class="sch-teams">${imt?`<b>${m.home}</b>`:m.home} <span style="color:var(--g3)">vs</span> ${imt?`<b>${m.away}</b>`:m.away}</span>
+        ${res}
+      </div>`;
     });
   });
   document.getElementById('schema-c').innerHTML=h;
 }
 
-// ORG PANEL
+// ═══ ORG PANEL ═══
 function rOrg(){
   const lv=M.filter(m=>m.st==='live');
   const tg=allGoals().length;
-  let h=`<div class="op-section"><div class="op-lbl">Overzicht</div>
-  <div class="op-stats">
-    <div class="op-stat"><div class="op-stat-n blue">${lv.length}</div><div class="op-stat-l">Live</div></div>
-    <div class="op-stat"><div class="op-stat-n">${M.filter(m=>m.st==='done').length}</div><div class="op-stat-l">Gespeeld</div></div>
-    <div class="op-stat"><div class="op-stat-n">${tg}</div><div class="op-stat-l">Goals</div></div>
-    <div class="op-stat"><div class="op-stat-n">${simU}</div><div class="op-stat-l">Online</div></div>
-  </div></div>`;
+  let h=`<div class="op-section">
+    <div class="op-lbl">Overzicht</div>
+    <div class="op-stats">
+      <div class="op-stat"><div class="op-sn blue">${lv.length}</div><div class="op-sl">Live</div></div>
+      <div class="op-stat"><div class="op-sn">${M.filter(m=>m.st==='done').length}</div><div class="op-sl">Gespeeld</div></div>
+      <div class="op-stat"><div class="op-sn">${tg}</div><div class="op-sl">Goals</div></div>
+      <div class="op-stat"><div class="op-sn">${simU}</div><div class="op-sl">Online</div></div>
+    </div>
+  </div>`;
   if(lv.length){
     h+='<div class="op-section"><div class="op-lbl">Velden live</div>';
-    lv.forEach(m=>{h+=`<div class="op-field"><div class="op-fn">${m.field} <span class="pdot" style="color:var(--red)"></span></div><div class="op-fs">${m.home} <b>${m.hs}–${m.as}</b> ${m.away}</div><div style="font-size:9px;color:var(--g2);margin-top:4px;text-align:center">${m.min}' gespeeld</div></div>`;});
+    lv.forEach(m=>{h+=`<div class="op-field">
+      <div class="op-fn">${m.field} <span class="pdot" style="color:var(--red)"></span></div>
+      <div class="op-fs">${m.home} <b>${m.hs}–${m.as}</b> ${m.away}</div>
+      <div style="font-size:9px;color:var(--g2);margin-top:4px;text-align:center">${m.min}' gespeeld</div>
+    </div>`;});
     h+='</div>';
   }
   h+='<div class="op-section"><div class="op-lbl">Score beheer</div>';
@@ -642,90 +809,139 @@ function rOrg(){
     const lbl=m.st==='live'?'⬤ LIVE':m.st==='done'?'Afgelopen':'Gepland';
     h+=`<div class="op-match">
       <div class="op-mhdr"><span class="op-mn">${m.home} vs ${m.away}</span><span class="op-ms" style="color:${col}">${lbl}</span></div>
-      <div class="op-score"><span class="op-sn">${m.hs??'–'}</span><span class="op-ssep">–</span><span class="op-sn">${m.as??'–'}</span></div>
+      <div class="op-score"><span class="op-snum">${m.hs??'–'}</span><span class="op-ssep">–</span><span class="op-snum">${m.as??'–'}</span></div>
       <div class="op-btns">
         ${m.st!=='upcoming'?`<button class="gb h" onclick="oGoal(${m.id},'h')">+⚽ ${m.home.split(' ')[0]}</button><button class="gb u" onclick="oUndo(${m.id})">↩</button><button class="gb a" onclick="oGoal(${m.id},'a')">+⚽ ${m.away.split(' ')[0]}</button>`:''}
-        ${m.st==='upcoming'?`<button class="mb start" style="flex:1" onclick="oStart(${m.id})">▶ Start wedstrijd</button>`:''}
+        ${m.st==='upcoming'?`<button class="mb start" onclick="oStart(${m.id})">▶ Start wedstrijd</button>`:''}
         ${m.st==='live'?`<button class="mb end" onclick="oEnd(${m.id})">🏁 Einde wedstrijd</button>`:''}
       </div>
     </div>`;
   });
-  h+=`</div><div class="op-section"><div class="op-lbl">Push notificaties</div>
-    <button class="mb notif" onclick="oNotif('🏆','Finale in 30 min!','Hoofdveld · 12:30 — zorg dat je er bent')">🏆 Finale melding sturen</button>
-    <button class="mb notif" onclick="oNotif('⏸','Pauze','15 minuten rust voor alle teams')">⏸ Pauze melding</button>
-    <button class="mb notif" onclick="oNotif('⚠️','Veldwijziging','Wedstrijd Veld A verplaatst naar Veld C')">⚠️ Locatiewijziging</button>
+  h+=`</div>
+  <div class="op-section">
+    <div class="op-lbl">Push notificaties</div>
+    <button class="mb notif" onclick="oNotif('🏆','Finale in 30 min!','Hoofdveld · 12:30')">🏆 Finale melding</button>
+    <button class="mb notif" onclick="oNotif('⏸','Pauze','15 min rust voor alle teams')">⏸ Pauze melding</button>
+    <button class="mb notif" onclick="oNotif('⚠️','Veldwijziging','Wedstrijd Veld A → Veld C')">⚠️ Locatiewijziging</button>
   </div>`;
   document.getElementById('lp-body').innerHTML=h;
 }
 function oGoal(id,s){
   const m=M[id];const tn=s==='h'?m.home:m.away;
-  const p=(PL[tn]||['Onbekend'])[Math.floor(Math.random()*(PL[tn]||['Onbekend']).length)];
+  const p=(PL[tn]||['Onbekend'])[Math.floor(Math.random()*(PL[tn]||[]).length)];
   if(s==='h')m.hs++;else m.as++;
   m.goals.push({t:s,p,m:m.min||Math.floor(Math.random()*40)+1});
-  toast('⚽','DOELPUNT — '+p,m.home+' '+m.hs+'–'+m.as+' '+m.away);
+  showToast('⚽','DOELPUNT — '+p,m.home+' '+m.hs+'–'+m.as+' '+m.away);
   rOrg();if(tab==='live')rLive();if(tab==='stand')rStand();if(tab==='scores')rScores();rHub();
 }
-function oUndo(id){const m=M[id];if(!m.goals.length)return;const l=m.goals.pop();if(l.t==='h')m.hs=Math.max(0,m.hs-1);else m.as=Math.max(0,m.as-1);rOrg();if(tab==='live')rLive();}
-function oStart(id){M[id].st='live';M[id].hs=0;M[id].as=0;M[id].min=1;toast('▶','Wedstrijd gestart',M[id].home+' vs '+M[id].away+' · '+M[id].field);rOrg();if(tab==='live')rLive();}
-function oEnd(id){M[id].st='done';toast('🏁','Afgelopen',M[id].home+' '+M[id].hs+'–'+M[id].as+' '+M[id].away);rOrg();if(tab==='live')rLive();if(tab==='stand')rStand();}
-function oNotif(ic,t,b){toast(ic,t,b);}
+function oUndo(id){
+  const m=M[id];if(!m.goals.length)return;
+  const l=m.goals.pop();if(l.t==='h')m.hs=Math.max(0,m.hs-1);else m.as=Math.max(0,m.as-1);
+  rOrg();if(tab==='live')rLive();
+}
+function oStart(id){
+  M[id].st='live';M[id].hs=0;M[id].as=0;M[id].min=1;
+  showToast('▶','Wedstrijd gestart',M[id].home+' vs '+M[id].away+' · '+M[id].field);
+  rOrg();if(tab==='live')rLive();
+}
+function oEnd(id){
+  M[id].st='done';
+  showToast('🏁','Afgelopen',M[id].home+' '+M[id].hs+'–'+M[id].as+' '+M[id].away);
+  rOrg();if(tab==='live')rLive();if(tab==='stand')rStand();
+}
+function oNotif(ic,t,b){showToast(ic,t,b);}
 
-// REF
+// ═══ REFEREE ═══
+let rPinStr='';
 function rk(k){
-  if(k==='d'){rPin=rPin.slice(0,-1);}
+  if(k==='d'){rPinStr=rPinStr.slice(0,-1);}
   else if(k==='ok'){rSubmit();return;}
-  else if(rPin.length<5)rPin+=k;
-  const chars=rPin.split('').concat(Array(5-rPin.length).fill('_'));
+  else if(rPinStr.length<5)rPinStr+=k;
+  const chars=rPinStr.split('').concat(Array(5-rPinStr.length).fill('_'));
   document.getElementById('ref-disp').textContent=chars.join(' ');
 }
 function rSubmit(){
-  if(PINS[rPin]===undefined){
+  if(PINS[rPinStr]===undefined){
     const d=document.getElementById('ref-disp');
-    d.style.borderColor='var(--red)';d.textContent='Onjuist!';
-    setTimeout(()=>{d.style.borderColor='';d.textContent='_ _ _ _ _';rPin='';},1500);return;
+    d.style.borderColor='var(--red)';d.textContent='Onjuiste PIN';
+    setTimeout(()=>{d.style.borderColor='';d.textContent='_ _ _ _ _';rPinStr='';},1600);
+    return;
   }
-  rMid=PINS[rPin];const m=M[rMid];
+  rMid=PINS[rPinStr];
+  const m=M[rMid];
   if(m.st==='upcoming'){m.st='live';m.hs=0;m.as=0;}
   rMin=m.min;
   document.getElementById('ref-pin').style.display='none';
   document.getElementById('ref-match').classList.add('on');
   document.getElementById('rm-field').textContent=m.field+' · Ronde '+m.round;
-  document.getElementById('rm-hn').textContent=m.home;document.getElementById('rm-an').textContent=m.away;
-  document.getElementById('rm-hlbl').textContent='Doelpunt\n'+m.home;document.getElementById('rm-albl').textContent='Doelpunt\n'+m.away;
-  document.getElementById('rm-he').textContent=TEAMS[m.home]?.e||'⚽';document.getElementById('rm-ae').textContent=TEAMS[m.away]?.e||'⚽';
-  updRScore();updRLog();
+  document.getElementById('rm-hn').textContent=m.home;
+  document.getElementById('rm-an').textContent=m.away;
+  document.getElementById('rm-hlbl').textContent='Doelpunt\n'+m.home;
+  document.getElementById('rm-albl').textContent='Doelpunt\n'+m.away;
+  document.getElementById('rm-he').textContent=TEAMS[m.home]?.e||'⚽';
+  document.getElementById('rm-ae').textContent=TEAMS[m.away]?.e||'⚽';
+  updRS();updRLog();
   if(rInv)clearInterval(rInv);
   rInv=setInterval(()=>{rMin++;updRTimer();},10000);
 }
-function updRScore(){const m=M[rMid];document.getElementById('rm-hs').textContent=m.hs;document.getElementById('rm-as').textContent=m.as;document.getElementById('rm-hc').textContent=m.hs;document.getElementById('rm-ac').textContent=m.as;}
-function updRTimer(){document.getElementById('rm-timer').textContent='⏱ '+rMin+"' — "+(rHalfNum===1?'1e':'2e')+' helft';}
+function updRS(){
+  const m=M[rMid];
+  document.getElementById('rm-hs').textContent=m.hs;
+  document.getElementById('rm-as').textContent=m.as;
+  document.getElementById('rm-hc').textContent=m.hs;
+  document.getElementById('rm-ac').textContent=m.as;
+}
+function updRTimer(){
+  document.getElementById('rm-timer').textContent='⏱ '+rMin+"' — "+(rHalfNum===1?'1e':'2e')+' helft';
+}
 function updRLog(){
   const m=M[rMid];const c=document.getElementById('rm-log');
   if(!m.goals.length){c.innerHTML='<div style="font-size:11px;color:var(--g2);padding:4px 0">Nog geen doelpunten</div>';return;}
-  c.innerHTML=m.goals.slice().reverse().map(g=>`<div class="ref-li"><span class="ref-li-ic">⚽</span><span class="ref-li-tx">${g.p} — ${g.t==='h'?M[rMid].home:M[rMid].away}</span><span class="ref-li-mn">${g.m}'</span></div>`).join('');
+  c.innerHTML=m.goals.slice().reverse().map(g=>
+    `<div class="ref-li"><span class="ref-li-ic">⚽</span><span class="ref-li-tx">${g.p} — ${g.t==='h'?M[rMid].home:M[rMid].away}</span><span class="ref-li-mn">${g.m}'</span></div>`
+  ).join('');
 }
 function rGoal(s){
   const m=M[rMid];const tn=s==='h'?m.home:m.away;
-  const p=(PL[tn]||['Onbekend'])[Math.floor(Math.random()*(PL[tn]||['Onbekend']).length)];
+  const p=(PL[tn]||['Onbekend'])[Math.floor(Math.random()*(PL[tn]||[]).length)];
   if(s==='h')m.hs++;else m.as++;
   m.goals.push({t:s,p,m:rMin});
   const el=document.getElementById(s==='h'?'rm-hs':'rm-as');
   el.style.color='var(--gold)';setTimeout(()=>el.style.color=s==='h'?'var(--red)':'#fff',600);
-  updRScore();updRLog();
-  toast('⚽','DOELPUNT — '+p,m.home+' '+m.hs+'–'+m.as+' '+m.away+' · '+rMin+"'");
+  updRS();updRLog();
+  showToast('⚽','DOELPUNT — '+p,m.home+' '+m.hs+'–'+m.as+' '+m.away+' · '+rMin+"'");
   if(tab==='live')rLive();if(tab==='scores')rScores();if(tab==='stand')rStand();rHub();
-  if(mode==='ref'&&document.getElementById('live-c'))rLive();
 }
-function rUndo(){const m=M[rMid];if(!m.goals.length)return;const l=m.goals.pop();if(l.t==='h')m.hs=Math.max(0,m.hs-1);else m.as=Math.max(0,m.as-1);updRScore();updRLog();toast('↩️','Gecorrigeerd',m.home+' '+m.hs+'–'+m.as+' '+m.away);}
-function rHalf(){rHalfNum=rHalfNum===1?2:1;rMin=0;document.getElementById('rm-hlf').textContent=rHalfNum===1?'Rust':'2e helft';toast('⏸',rHalfNum===2?'Rust!':'2e helft gestart',rHalfNum===2?'Pauze':'Wedstrijd hervat');}
-function rEnd(){const m=M[rMid];m.st='done';m.min=45;toast('🏁','Wedstrijd afgelopen','Eindstand: '+m.home+' '+m.hs+'–'+m.as+' '+m.away);if(rInv)clearInterval(rInv);rLogout();if(tab==='live')rLive();if(tab==='stand')rStand();}
-function rLogout(){rMid=null;rPin='';rHalfNum=1;rMin=0;document.getElementById('ref-pin').style.display='flex';document.getElementById('ref-match').classList.remove('on');document.getElementById('ref-disp').textContent='_ _ _ _ _';if(rInv)clearInterval(rInv);}
+function rUndo(){
+  const m=M[rMid];if(!m.goals.length)return;
+  const l=m.goals.pop();if(l.t==='h')m.hs=Math.max(0,m.hs-1);else m.as=Math.max(0,m.as-1);
+  updRS();updRLog();
+  showToast('↩️','Gecorrigeerd',m.home+' '+m.hs+'–'+m.as+' '+m.away);
+}
+function rHalf(){
+  rHalfNum=rHalfNum===1?2:1;rMin=0;
+  document.getElementById('rm-hlf').textContent=rHalfNum===1?'Rust':'2e helft';
+  showToast('⏸',rHalfNum===2?'Rust!':'2e helft gestart',rHalfNum===2?'Halverwege de wedstrijd':'Wedstrijd hervat');
+}
+function rEnd(){
+  const m=M[rMid];m.st='done';m.min=45;
+  showToast('🏁','Wedstrijd afgelopen','Eindstand: '+m.home+' '+m.hs+'–'+m.as+' '+m.away);
+  if(rInv)clearInterval(rInv);rLogout();
+  if(tab==='live')rLive();if(tab==='stand')rStand();
+}
+function rLogout(){
+  rMid=null;rPinStr='';rHalfNum=1;rMin=0;
+  document.getElementById('ref-pin').style.display='flex';
+  document.getElementById('ref-match').classList.remove('on');
+  document.getElementById('ref-disp').textContent='_ _ _ _ _';
+  if(rInv)clearInterval(rInv);
+}
 
-// TOAST
+// ═══ TOAST ═══
 let tTimer=null;
-function toast(icon,title,body){
+function showToast(icon,title,body){
   const t=document.getElementById('toast');
-  document.getElementById('t-icon').textContent=icon;
+  document.getElementById('t-ic').textContent=icon;
   document.getElementById('t-title').textContent=title;
   document.getElementById('t-body').textContent=body;
   t.classList.remove('hidden');
@@ -734,7 +950,7 @@ function toast(icon,title,body){
   tTimer=setTimeout(()=>t.classList.add('hidden'),4000);
 }
 
-// LOAD
+// ═══ LOAD ═══
 function setLoad(v){
   simU=parseInt(v);
   document.getElementById('uc').textContent=parseInt(v).toLocaleString('nl');
@@ -745,12 +961,10 @@ function setLoad(v){
 function updLoad(v){
   v=parseInt(v);
   const lat=v<300?10+Math.round(v/30):v<800?20+Math.round((v-300)/25):v<1500?40+Math.round((v-800)/18):85+Math.round((v-1500)/15);
-  const qps=Math.round(v*.05+Math.random()*3);
-  const stHtml=v<600?'<span style="color:var(--green)">✓ OK</span>':v<1300?'<span style="color:var(--yellow)">⚡ Hoog</span>':'<span style="color:var(--red)">⚠ Kritiek</span>';
+  const stH=v<600?'<span style="color:var(--green)">✓ OK</span>':v<1300?'<span style="color:var(--yellow)">⚡ Hoog</span>':'<span style="color:var(--red)">⚠ Kritiek</span>';
   document.getElementById('lat').textContent=lat+'ms';
   document.getElementById('wsc').textContent=v.toLocaleString('nl');
-  document.getElementById('dbc').textContent=qps+' q/s';
-  document.getElementById('stc').innerHTML=stHtml;
+  document.getElementById('stc').innerHTML=stH;
   const bars=document.getElementById('lb-bars');bars.innerHTML='';
   for(let i=0;i<12;i++){
     const bh=Math.round(2+Math.random()*14*(v/2000));
@@ -761,7 +975,7 @@ function updLoad(v){
   }
 }
 
-// INIT
+// ═══ INIT ═══
 updLoad(247);rLive();rHub();
 </script>
 </body>
